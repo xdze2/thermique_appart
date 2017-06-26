@@ -37,7 +37,7 @@ def getfeeddata(feed_id, startdate=None, enddate=None, interval=None ):
         
         # Compute interval for full data range:
         start_unix = meta['start_time']*1000
-        end_unix = int(  pd.to_datetime('today').timestamp() )*1000
+        end_unix = int( dt.datetime.now().timestamp()*1000 )
         dt_range = (end_unix - start_unix)/1000
         interval = int( np.ceil( dt_range/DATAREQUESTLIMIT / feed_interval )*feed_interval )
     else:
