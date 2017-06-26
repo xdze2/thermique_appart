@@ -31,19 +31,27 @@ def getfeeddata(feed_id, startdate=None, enddate=None, interval=None ):
         interval: seconds
     """
     
-    if not startdate:
-        meta = getfeedmeta( feed_id )
-        feed_interval = meta['interval']
-        
-        # Compute interval for full data range:
+    meta = getfeedmeta( feed_id )
+    feed_interval = meta['interval'] 
+    
+     
+    if not startdate:  # then take feed start date
         start_unix = meta['start_time']*1000
-        end_unix = int( dt.datetime.now().timestamp()*1000 )
-        dt_range = (end_unix - start_unix)/1000
-        interval = int( np.ceil( dt_range/DATAREQUESTLIMIT / feed_interval )*feed_interval )
     else:
         start_unix = int( startdate.timestamp() )*1000  # feed in milliseconds
+        
+        
+    if not enddate: # then take now
+        end_unix = int( dt.datetime.now().timestamp()*1000 )
+    else:
         end_unix = int( enddate.timestamp() )*1000
-
+        
+    # Compute interval for full data range:
+    dt_range = (end_unix - start_unix)/1000
+    interval_min = int( np.ceil( dt_range/DATAREQUESTLIMIT / feed_interval )*feed_interval )
+    
+    interval = max( interval_min, feed_interval )  
+        
     query = 'http://%s/emoncms/feed/data.json?id=%i&start=%i&end=%i&interval=%i&apikey=%s' \
             % (emoncms_ip, feed_id, start_unix, end_unix, interval,  emoncms_key  )
 
@@ -78,7 +86,7 @@ def builddataframe(feeds, dataframefreq, **timerangeparams ):
     for  feed_name, feed_id in feeds.items():
         D.append( getTimeserie( feed_id, feed_name, dataframefreq , **timerangeparams  )  )
 
-    df = pd.concat( D, axis=1)
+    df = pd.concat( D, axis=1).fillna(method='ffill').fillna(method='bfill')
     
     return df
     
