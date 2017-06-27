@@ -24,7 +24,7 @@ with open('darksky_key.txt') as f:
     
 # voir https://darksky.net/dev/docs/response
 datalabels = ['temperature', 'cloudCover', 'precipIntensity', 'windSpeed' , 'windBearing',      
-            'apparentTemperature']
+            'apparentTemperature', 'humidity']
 
 
 
