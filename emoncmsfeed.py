@@ -92,3 +92,11 @@ def builddataframe(feeds, dataframefreq, **timerangeparams ):
     
 
 
+
+## Quels sont les intervals réels ?
+
+#data = getfeeds.getfeeddata( 3 )
+#intervals = np.array( [ (data[k+1][0]-data[k][0] )/1000 for k in range(len(data)-1)  ] )
+#plt.plot( intervals, ',' ); plt.ylabel('intervals (seconde)')
+#np.unique(intervals,  return_counts=True )
+
