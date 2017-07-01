@@ -18,7 +18,7 @@ from darksky import forecast
 
 # Load the API key for darksky
 with open('darksky_key.txt') as f:
-    key = f.read()
+    KEY = f.read()
     
     
     
@@ -26,8 +26,11 @@ with open('darksky_key.txt') as f:
 datalabels = ['temperature', 'cloudCover', 'precipIntensity', 'windSpeed' , 'windBearing',      
             'apparentTemperature', 'humidity']
 
+EXCLUDE = ['currently', 'minutely', 'daily', 'flags']  # from the query
 
-
+COL2DROP = ['icon', 'apparentTemperature', 'ozone', 'summary', 'uvIndex', 'windGust', 'dewPoint',
+               'precipProbability', 'visibility', 'pressure', 'humidity', 'precipType']
+               
 
 def buildDFdaily(day, coords):
     """ Construit un dataframe avec les données selectionnées (datalabels), pour un jour particulier
@@ -35,7 +38,7 @@ def buildDFdaily(day, coords):
         coords: GPS 
     """
     
-    data = forecast(key, *coords, units='si', lang='fr', time=day)
+    data = forecast(KEY, *coords, units='si', lang='fr', time=day)
     
     timeindex = pd.to_datetime( [ hour.time for hour in data.hourly ],  unit='s' , origin='unix' )
     
@@ -51,15 +54,32 @@ def buildmultidayDF(startday, lastday, coords ):
     """ Concatène plusieurs jours ensemble
         startday, lastday: pandas timestamp
     """
-    
+
     daterange = pd.date_range(start=startday, end=lastday,  freq='D', normalize=True)
 
-    D = []
+    records = []
     for day in daterange:
+        
         day_iso = day.isoformat()
-        D.append(  buildDFdaily(day_iso, coords)  )
+        
+        print('%i, '%day.day, end='')
+        
+        data = forecast(KEY, *coords, units='si', lang='fr', \
+             time=day_iso, exclude=EXCLUDE)
+        records_oftheday = data['hourly']['data']     
+        records.extend( records_oftheday )
+
+    print( 'done' )
     
-    allweatherdata = pd.concat(D, axis=0)
+    # build DF:
+    allweatherdata = pd.DataFrame.from_records(records, index='time')
+    allweatherdata.drop(COL2DROP, axis=1, inplace=True, errors='ignore')
+    
+    allweatherdata.index = pd.to_datetime(allweatherdata.index, unit='s')
+    
+    allweatherdata['cloudCover'] = allweatherdata['cloudCover'].fillna( 0 )
+
+    
     return allweatherdata   
     
     
