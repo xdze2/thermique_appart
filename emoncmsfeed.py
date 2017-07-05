@@ -72,6 +72,11 @@ def getTimeserie( feed_id, feed_name, dataframefreq, **timerangeparams  ):
     DateIndex = pd.to_datetime( [ v[0] for v in data ],  unit='ms' , origin='unix'  )
     
     df = pd.DataFrame( {feed_name:Mesures}, index=DateIndex )
+    
+    # Remove outliers
+    mask = np.abs( df[feed_name]-df[feed_name].mean() ) > 4*df[feed_name].std()
+    df[feed_name].loc[ mask ] = np.nan
+    
     df = df.resample(dataframefreq).mean().interpolate()
 
     return df
