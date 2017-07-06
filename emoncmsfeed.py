@@ -77,7 +77,8 @@ def getTimeserie( feed_id, feed_name, dataframefreq, **timerangeparams  ):
     mask = np.abs( df[feed_name]-df[feed_name].mean() ) > 4*df[feed_name].std()
     df[feed_name].loc[ mask ] = np.nan
     
-    df = df.resample(dataframefreq).mean().interpolate()
+    # Resample
+    df = df.resample(dataframefreq).mean()
 
     return df
     
@@ -91,7 +92,7 @@ def builddataframe(feeds, dataframefreq, **timerangeparams ):
     for  feed_name, feed_id in feeds.items():
         D.append( getTimeserie( feed_id, feed_name, dataframefreq , **timerangeparams  )  )
 
-    df = pd.concat( D, axis=1).fillna(method='ffill').fillna(method='bfill')
+    df = pd.concat( D, axis=1)
     
     return df
     
