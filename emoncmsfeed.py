@@ -55,6 +55,8 @@ def getfeeddata(feed_id, startdate=None, enddate=None, interval=None ):
     query = 'http://%s/emoncms/feed/data.json?id=%i&start=%i&end=%i&interval=%i&apikey=%s' \
             % (emoncms_ip, feed_id, start_unix, end_unix, interval,  emoncms_key  )
 
+            
+
     r = requests.get(query)
     data = r.json()
 
