@@ -27,9 +27,9 @@ def isUpperHorizon( azimuth, altitude_deg ):
     h = np.interp(azimuth, horizon_data[0, :], horizon_data[1, :])
 
     if h > altitude_deg:
-        return 0
+        return False
     else:
-        return 1
+        return True
 
 
 
@@ -93,9 +93,10 @@ def sun_positionAndFlux( coords, date ):
     phi_S_deg = solar.get_azimuth( *coords, date ) # deg, azimuth of the sun,relative to south
     beta_deg = solar.get_altitude( *coords, date ) # deg, altitude angle of the sun
     
-    I0 = radiation.get_radiation_direct( date, beta_deg )   # W/m2
-    I0 = I0* isUpperHorizon( phi_S_deg, beta_deg )
-    
+    if isUpperHorizon( phi_S_deg, beta_deg ):  
+        I0 = radiation.get_radiation_direct( date, beta_deg )   # W/m2
+    else:
+        I0 = 0
     
     return (I0, phi_S_deg, beta_deg)
 
