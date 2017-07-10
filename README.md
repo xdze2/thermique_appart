@@ -4,7 +4,10 @@ Ensemble de script python pour étudier et modéliser le comportement thermique 
 
 ## Sources de données météo
  * https://darksky.net/dev/docs
+Pas forcement le mieux pour l'Europe, mais API gratuite et pratique.  
+ 
  * https://www.meteoblue.com/fr/meteo/archive/export
+Plus fiable, mais pas d'API en accès libre, seulement deux dernières semaines en CSV. 
  
  
 ## Calcul du flux solaire
@@ -20,6 +23,8 @@ Ensemble de script python pour étudier et modéliser le comportement thermique 
 
 # Modèle de la température des tuiles
 [notebook tuile](./Model02_tuile.ipynb)
+
+
 <img src="./images/sch_model02.jpg" width="450px" alt='schema mod02' />
 
 
@@ -28,7 +33,7 @@ Ensemble de script python pour étudier et modéliser le comportement thermique 
 
 
 
-# Références trouvées & intéressantes
+## Références trouvées & intéressantes
 
 * **Estimation of continuous-time models for the heat dynamics of a building.** Energy and Buildings, 22(1), 67-79. Madsen, H., & Holst, J. (1995). [pdf](http://henrikmadsen.org/wp-content/uploads/2014/05/Journal_article_-_1995_-_Estimation_of_continuous-time_models_for_the_heat_dynamics_of_a_building.pdf)
 
