@@ -28,8 +28,8 @@ datalabels = ['temperature', 'cloudCover', 'precipIntensity', 'windSpeed' , 'win
 
 EXCLUDE = ['currently', 'minutely', 'daily', 'flags']  # from the query
 
-COL2DROP = ['icon', 'apparentTemperature', 'ozone', 'summary', 'uvIndex', 'windGust', 'dewPoint',
-               'precipProbability', 'visibility', 'pressure', 'humidity', 'precipType']
+COL2DROP = ['icon', 'apparentTemperature', 'ozone', 'summary', 'uvIndex',  'dewPoint',
+               'precipProbability', 'visibility', 'pressure',  'precipType']
                
 
 def buildDFdaily(day, coords):
