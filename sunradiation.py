@@ -116,7 +116,8 @@ def buildmultidayDF(  coords, index, cloudCover=None ):
     df = pd.DataFrame(data=array, index=index, columns=cols ) 
     
     if isinstance(cloudCover, pd.Series): 
-        df['I0'] = df['I0']*( 1 - cloudCover )
+        df['I0'] = df['I0']*( 1 - 0.75*cloudCover**( 3.4 ) )
+        # see https://www.shodor.org/os411/courses/_master/tools/calculators/solarrad/index.html
         
     return df 
     
