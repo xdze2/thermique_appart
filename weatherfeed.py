@@ -38,7 +38,7 @@ def buildDFdaily(day, coords):
         coords: GPS 
     """
     
-    data = forecast(KEY, *coords, units='si', lang='fr', time=day)
+    data = forecast(KEY, *coords, units='si', lang='fr', time=day, exclude=EXCLUDE)
     
     timeindex = pd.to_datetime( [ hour.time for hour in data.hourly ],  unit='s' , origin='unix' )
     
