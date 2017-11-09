@@ -9,7 +9,7 @@ import requests
 
 
 emoncms_key = 'f4b65fcf3f3f28c9af1d86bf362e7e5e'
-emoncms_ip = '192.168.0.100'
+emoncms_ip = '192.168.0.101'
 DATAREQUESTLIMIT = 8928
 
 
@@ -71,7 +71,7 @@ def getTimeserie( feed_id, feed_name, dataframefreq, **timerangeparams  ):
     
     data = getfeeddata( feed_id, **timerangeparams )
     Mesures = [ v[1] for v in data ]
-    DateIndex = pd.to_datetime( [ v[0] for v in data ],  unit='ms' , origin='unix'  )
+    DateIndex = pd.to_datetime( [ v[0] for v in data ],  unit='ms' , origin='unix' )
     
     df = pd.DataFrame( {feed_name:Mesures}, index=DateIndex )
     
